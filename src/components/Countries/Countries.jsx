@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Country from "../Country/Country";
 import "./countries.css";
 
+
 const Countries = () => {
   const [countries, setCountries] = useState([]);
   const [visitedCountries, setVisitedCountries] = useState([]);
+  const [visitedFlags, setVisitedFlags] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -19,11 +21,29 @@ const Countries = () => {
     setVisitedCountries(newVisitedCountry);
   };
 
+  const handleVisitedFlags = (flag) => {
+    const newVisitedFlag = [...visitedFlags, flag];
+    setVisitedFlags(newVisitedFlag);
+  };
+
   return (
     <div>
       <h3>Countries: {countries.length}</h3>
       <div>
         <h4>Visited Countries:{visitedCountries.length}</h4>
+        <ul>
+          {visitedCountries.map((country) => (
+            <li>{country?.name?.common}</li>
+          ))}
+        </ul>
+      </div>
+      <div >
+        <h4>Visited Flags:{visitedCountries.length}</h4>
+        <ul>
+          {visitedFlags.map((flag) => (
+            <img src={flag} className="flag-container"></img>
+          ))}
+        </ul>
       </div>
 
       <div className="country-container">
@@ -31,6 +51,7 @@ const Countries = () => {
           <Country
             key={country.name?.common}
             handleMarkAsVisited={handleMarkAsVisited}
+            handleVisitedFlags={handleVisitedFlags}
             country={country}
           ></Country>
         ))}
